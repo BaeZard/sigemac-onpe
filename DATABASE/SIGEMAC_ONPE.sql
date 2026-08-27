@@ -1,0 +1,2 @@
+Create Database SIGMAC_ONPE
+GO
