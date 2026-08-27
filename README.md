@@ -1,3 +1,4 @@
+```plaintext
 sigemac-onpe/
 ├── .gitignore                      # Configuración para ignorar archivos (binarios, CSVs, contraseñas)
 ├── README.md                       # Documentación general y guía de instalación del proyecto
@@ -6,7 +7,7 @@ sigemac-onpe/
 │   ├── notebooks/
 │   │   └── limpieza_datos.ipynb    # Tu notebook de Google Colab (exportado desde Colab)
 │   ├── ssis/
-│   │   └── Proyecto_SSIS.sln      # Solución de Visual Studio para SSIS (Integration Services)
+│   │   └── Proyecto_SSIS.sln       # Solución de Visual Studio para SSIS (Integration Services)
 │   └── data_sample/
 │       └── muestra_miembros.csv    # Archivo con 5 a 10 filas de muestra (NO poner CSVs pesados aquí)
 │
@@ -35,3 +36,4 @@ sigemac-onpe/
     │   └── main.js                 # Interacción general de la interfaz
     ├── login.html                  # Pantalla de autenticación (usuario y contraseña)
     └── dashboard.html              # Panel principal para consultar/gestionar el material
+```
