@@ -69,4 +69,4 @@ SIGEMAC-ONPE/
 
 | Inicio de Sesión | Panel de Control |
 | :---: | :---: |
-| ![Login](doc/LOGIN.png) | ![Dashboard](doc/DASHBOARD-MIEMBRODEMESA.png) |
+| ![Login](DOC/LOGIN.png) | ![Dashboard](DOC/DASHBOARD-MIEMBRODEMESA.png) |
