@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel · SIGEMAC ONPE</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <aside>
+      <div class="side-top">
+        <img src="assets/img/onpe-logo.png" alt="ONPE">
+        <span class="brand-t"><b>ONPE</b><small>Capacitaciones</small></span>
+        <button id="toggle" type="button" title="Contraer menú">◀</button>
+      </div>
+      <div class="pill" id="pill"></div>
+      <nav id="nav"></nav>
+      <a class="nv" id="logout"><span class="ic">🚪</span><span class="lbl">Cerrar sesión</span></a>
+    </aside>
+    <div class="mainwrap">
+      <header class="top">
+        <div><span class="muted">ONPE</span> › <b id="crumb"></b></div>
+        <div class="who"><span class="bell">🔔<i></i></span><div><b id="whoName"></b><small>Proceso Electoral 2026</small></div></div>
+      </header>
+      <main class="content" id="content"></main>
+    </div>
+  </div>
+  <div id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/models/Models.js"></script>
+  <script src="js/data/ApiClient.js"></script>
+  <script src="js/data/Repositories.js"></script>
+  <script src="js/business/Services.js"></script>
+  <script src="js/views/Charts.js"></script>
+  <script src="js/views/Views.js"></script>
+  <script src="js/controllers/AppController.js"></script>
+</body>
+</html>

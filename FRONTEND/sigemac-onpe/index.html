@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIGEMAC · ONPE</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="portal">
+  <button class="staff-tab" id="openStaff" type="button">🔒 Personal ONPE</button>
+
+  <main class="stage">
+    <img class="hero l" src="assets/img/persona-izq.png" alt="" aria-hidden="true">
+    <img class="hero r" src="assets/img/persona-der.png" alt="" aria-hidden="true">
+    <section class="card">
+      <div class="brand">
+        <img src="assets/img/onpe-logo.png" alt="ONPE">
+        <div><b>Sistema de Gestión de Capacitaciones Electorales</b><small>SIGEMAC</small></div>
+      </div>
+      <h1>Consulta si eres miembro de mesa y accede a tu capacitación</h1>
+      <form id="dniForm" novalidate>
+        <label for="dniQ">DNI:</label>
+        <input id="dniQ" inputmode="numeric" maxlength="8" placeholder="Número de DNI" autocomplete="off">
+        <button class="btn" type="submit">CONSULTAR</button>
+      </form>
+      <div id="dniOut" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div><b>Oficina Central</b>Jr. Washington 1894 - Cercado de Lima</div>
+    <div><b>Escríbenos</b>informes@onpe.gob.pe</div>
+    <div><b>Central Telefónica</b>Fono ONPE: (01) 417-0630</div>
+  </footer>
+
+  <dialog id="staffDlg">
+    <form id="loginForm" novalidate>
+      <h2>Acceso del personal</h2>
+      <p class="muted">Solo Coordinadores, Capacitadores y Asistentes Logísticos.</p>
+      <label>Rol</label>
+      <div class="roles" id="roles"></div>
+      <label for="dni">DNI</label>
+      <input id="dni" inputmode="numeric" maxlength="8" autocomplete="username" placeholder="8 dígitos">
+      <label for="pwd">Contraseña</label>
+      <input id="pwd" type="password" autocomplete="current-password">
+      <p class="error" id="err" role="alert"></p>
+      <button class="btn" type="submit">Ingresar al sistema</button>
+      <button class="link" type="button" id="closeStaff">Cancelar</button>
+    </form>
+  </dialog>
+
+  <script src="js/config.js"></script>
+  <script src="js/models/Models.js"></script>
+  <script src="js/data/ApiClient.js"></script>
+  <script src="js/data/Repositories.js"></script>
+  <script src="js/business/Services.js"></script>
+  <script src="js/views/Views.js"></script>
+  <script src="js/controllers/AuthController.js"></script>
+</body>
+</html>

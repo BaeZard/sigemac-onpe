@@ -1,0 +1,6 @@
+@SIGEMAC_ONPE_HostAddress = http://localhost:5130
+
+GET {{SIGEMAC_ONPE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
