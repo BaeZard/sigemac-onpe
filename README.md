@@ -1,39 +1,72 @@
-```plaintext
-sigemac-onpe/
-├── .gitignore                      # Configuración para ignorar archivos (binarios, CSVs, contraseñas)
-├── README.md                       # Documentación general y guía de instalación del proyecto
-│
-├── etl/                            # [FASE PREVIA]: Procesamiento e Ingesta de Datos
-│   ├── notebooks/
-│   │   └── limpieza_datos.ipynb    # Tu notebook de Google Colab (exportado desde Colab)
-│   ├── ssis/
-│   │   └── Proyecto_SSIS.sln       # Solución de Visual Studio para SSIS (Integration Services)
-│   └── data_sample/
-│       └── muestra_miembros.csv    # Archivo con 5 a 10 filas de muestra (NO poner CSVs pesados aquí)
-│
-├── database/                       # [CAPA 3]: Scripts y Esquema de SQL Server
-│   └── scripts/
-│       ├── 01_schema_miembros.sql  # Script DDL para crear la tabla 'MiembrosMesa'
-│       ├── 02_schema_usuarios.sql  # Script DDL para tablas de Login (Usuarios, Roles, Credenciales)
-│       ├── 03_schema_materiales.sql# Script DDL para tablas de Materiales de Capacitación
-│       └── 04_seed_data.sql        # Datos iniciales/prueba para usuarios y materiales
-│
-├── backend/                        # [CAPA 2]: Lógica de Negocio y Web API (.NET / C#)
-│   ├── src/
-│   │   ├── Controllers/            # Controladores API (ej: AuthController.cs, MaterialesController.cs)
-│   │   ├── Services/               # Lógica de negocio (Hash de contraseñas, tokens JWT)
-│   │   ├── Models/                 # Modelos de datos y DTOs para consultas T-SQL
-│   │   ├── Program.cs              # Punto de entrada de la Minimal API / Web API
-│   │   └── appsettings.Example.json# Plantilla de configuración (cadena de conexión de ejemplo)
-│   └── BackendApi.sln              # Solución de .NET (Visual Studio)
-│
-└── frontend/                       # [CAPA 1]: Presentación (HTML5, CSS3, JS)
-    ├── css/
-    │   └── styles.css              # Estilos visuales de la plataforma
-    ├── js/
-    │   ├── auth.js                 # Lógica JS de login/logout y gestión de sesiones
-    │   ├── materiales.js           # Peticiones Fetch API para consultar y mostrar materiales
-    │   └── main.js                 # Interacción general de la interfaz
-    ├── login.html                  # Pantalla de autenticación (usuario y contraseña)
-    └── dashboard.html              # Panel principal para consultar/gestionar el material
+# 🗳️ SIGEMAC - ONPE
+> **Sistema de Gestión de Materiales y Capacitación Electoral**
+
+SIGEMAC-ONPE es una solución web integral diseñada para gestionar, monitorear y optimizar la distribución de materiales electorales y la capacitación de miembros de mesa para los procesos electorales liderados por la Oficina Nacional de Procesos Electorales (ONPE).
+
+---
+
+## 📌 Arquitectura del Sistema
+
+El proyecto implementa una arquitectura híbrida desacoplada basada en **Client-Server (REST API)**, complementada por un pipeline end-to-end de **Integración de Datos (ETL)**:
+
+
+```text
+ ┌────────────────────────┐
+ │ Google Colab (Python)  │
+ │  Pandas (Limpia CSV)   │
+ └───────────┬────────────┘
+             │
+             ▼
+ ┌────────────────────────┐      ┌────────────────────────┐
+ │   SSIS (Integration)   ├─────►│  SQL Server (Database) │
+ │     Carga Masiva       │      └───────────┬────────────┘
+ └────────────────────────┘                  │
+                                             │ EF Core (Scaffolding)
+                                             ▼
+ ┌────────────────────────┐      ┌────────────────────────┐
+ │  Vanilla JS (Frontend) │◄────►│ .NET Core Web API (C#) │
+ │   Peticiones HTTP/JSON │      │   Controladores & DTOs │
+ └────────────────────────┘      └────────────────────────┘
 ```
+
+## 📁 Estructura del Repositorio
+
+```text
+SIGEMAC-ONPE/
+├── .git/
+├── BACKEND/          # Web API en .NET Core (C#) + Entity Framework Core
+├── DATABASE/         # Scripts DDL/DML, vistas y procedimientos almacenados en SQL Server
+├── ETL/              # Pipelines de datos (Google Colab / Python + Paquetes SSIS)
+├── FRONTEND/         # Cliente web dinámico (Vanilla JS, HTML5, CSS3)
+├── docs/             # Documentación técnica y recursos gráficos
+│   └── assets/       # Capturas de pantalla, diagramas y esquemas
+└── README.md         # Documentación principal del proyecto
+```
+
+### Detalle de Módulos
+
+* **`BACKEND/`**: API REST desarrollada en **.NET Core (C#)** que utiliza **Entity Framework Core** (`SigemacOnpeContext`)[cite: 2] para la lógica de negocio, autenticación, controladores REST y la capa de acceso a datos.
+* **`DATABASE/`**: Objetos relacionales de SQL Server, definición de esquemas, índices y scripts de respaldo.
+* **`ETL/`**:
+  * **Notebooks (`.ipynb`):** Scripts en Python ejecutados en **Google Colab** utilizando la librería **Pandas** para la limpieza, estructuración, validación de reglas de negocio y exportación de datasets en formato `.csv`.
+  * **Paquetes SSIS (`.dtsx`):** Proyectos de **SQL Server Integration Services** orientados al flujo de datos, transformación y automatización de la carga masiva desde los archivos `.csv` procesados hacia la base de datos SQL Server.
+* **`FRONTEND/`**: Interfaz de usuario ligera desarrollada con **Vanilla JS (ES6 Modules)**, HTML5 y CSS3.
+  * *Modo Híbrido:* Mantenimiento de repositorios cliente (`js/data/Repositories.js`) con capacidad de trabajar en modo desarrollo con datos simulados (`USE_MOCK: true`) o conectarse a la API real vía `ApiClient.js` (`USE_MOCK: false`).
+* **`docs/`**: Carpeta destinada al almacenamiento de capturas del sistema, diagramas de arquitectura y manuales de usuario.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+* **Procesamiento de Datos:** Python 3, Pandas, Google Colab
+* **Integración de Datos:** SQL Server Integration Services (SSIS)
+* **Base de Datos:** SQL Server
+* **Backend:** C# (.NET Core Web API), Entity Framework Core[cite: 2]
+* **Frontend:** Vanilla JS (ES6 Modules), HTML5, CSS3
+
+---
+## 📸 Capturas de Pantalla
+
+| Inicio de Sesión | Panel de Control |
+| :---: | :---: |
+| ![Login](doc/LOGIN.png) | ![Dashboard](doc/DASHBOARD-MIEMBRODEMESA.png) |
