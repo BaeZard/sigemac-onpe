@@ -17,10 +17,9 @@ namespace SIGEMAC_ONPE.Controllers
         }
 
         [HttpGet]
-        [Route("a")]
         public async Task<IActionResult> Get()
         {
-            var lista = await dbContext.Odpes.ToListAsync();
+            var lista = await dbContext.SesionCapacitacions.ToListAsync();
             return StatusCode(StatusCodes.Status200OK, lista);
         }
 

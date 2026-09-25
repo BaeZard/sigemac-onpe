@@ -26,16 +26,33 @@ namespace SIGEMAC_ONPE.Controllers
         }
 
         [HttpGet]
-        [Route("Obtener/{dni}")]
-        /* Este es tu CUS-01: Consulta por DNI del ciudadano */
-        public async Task<IActionResult> Get(string dni)
+        [Route("{dni}")]
+        public async Task<IActionResult> GetByDni(string dni)
         {
-            // El Include trae automáticamente los datos de la tabla ODPE asociada
             var miembro = await dbContext.MiembroMesas
-                .Include(e => e.IdOdpeNavigation)
-                .FirstOrDefaultAsync(e => e.Dni == dni);
+                .Include(m => m.IdOdpeNavigation)
+                .FirstOrDefaultAsync(m => m.Dni == dni);
 
-            return StatusCode(StatusCodes.Status200OK, miembro);
+            if (miembro == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = "No se encontró el registro." });
+            }
+
+            // Mapeamos los datos combinando la información de la tabla MiembroMesa y su ODPE relacionada
+            var resultado = new
+            {
+                dni = miembro.Dni,
+                nombre = $"{miembro.Nombres} {miembro.Apellidos}", // Formato unificado que espera el frontend
+                nombres = miembro.Nombres,
+                apellidos = miembro.Apellidos,
+                cargo = miembro.Cargo,
+                estadoCapacitacion = miembro.EstadoCapacitacion,
+                local = miembro.IdOdpeNavigation?.Direccion ?? "Sede Principal ODPE",
+                region = miembro.IdOdpeNavigation?.Region ?? "Lima",
+                sesionId = 1 // Sesión predeterminada o asociada
+            };
+
+            return StatusCode(StatusCodes.Status200OK, resultado);
         }
 
         [HttpPost]

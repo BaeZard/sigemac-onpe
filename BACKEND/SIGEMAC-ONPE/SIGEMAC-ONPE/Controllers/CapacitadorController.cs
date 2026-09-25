@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 using SIGEMAC_ONPE.Models;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace SIGEMAC_ONPE.Controllers
 {
@@ -13,46 +11,56 @@ namespace SIGEMAC_ONPE.Controllers
     {
         private readonly SigemacOnpeContext dbContext;
 
-        public CapacitadorController(SigemacOnpeContext _dbContext) 
+        public CapacitadorController(SigemacOnpeContext _dbContext)
         {
             dbContext = _dbContext;
         }
 
+        // GET: api/Capacitador -> Devuelve la lista correcta de capacitadores
         [HttpGet]
-        [Route("a")]
-
         public async Task<IActionResult> Get()
         {
-            var listaCapacitador = await dbContext.Capacitadors.ToListAsync();
-            return StatusCode(StatusCodes.Status200OK,listaCapacitador);
+            var lista = await dbContext.Capacitadors.ToListAsync();
+            return StatusCode(StatusCodes.Status200OK, lista);
         }
 
-        [HttpGet]
-        [Route("Obtener/{IdCapacitador:int}")]
-
-        /*a*/
+        // GET: api/Capacitador/Obtener/5
+        [HttpGet("Obtener/{IdCapacitador:int}")]
         public async Task<IActionResult> Get(int idCapacitador)
         {
-            var Capacitador= await dbContext.Capacitadors.FirstOrDefaultAsync(e => e.IdCapacitador==idCapacitador);
-            return StatusCode(StatusCodes.Status200OK, Capacitador);
+            var capacitador = await dbContext.Capacitadors.FirstOrDefaultAsync(e => e.IdCapacitador == idCapacitador);
+            if (capacitador == null) return NotFound(new { mensaje = "No se encontró el registro." });
+            return StatusCode(StatusCodes.Status200OK, capacitador);
         }
 
-        [HttpPost]
-        [Route("Nuevo")]
+        // GET: api/Capacitador/PorDni/40125896 -> Resuelve la carga del panel según el DNI logueado
+        [HttpGet("PorDni/{dni}")]
+        public async Task<IActionResult> GetPorDni(string dni)
+        {
+            var capacitador = await dbContext.Capacitadors
+                .Include(c => c.IdUsuarioNavigation)
+                .FirstOrDefaultAsync(c => c.IdUsuarioNavigation.Username == dni);
 
+            if (capacitador == null)
+            {
+                return NotFound(new { mensaje = "No se encontró el registro del capacitador." });
+            }
 
+            return StatusCode(StatusCodes.Status200OK, capacitador);
+        }
+
+        // POST: api/Capacitador/Nuevo
+        [HttpPost("Nuevo")]
         public async Task<IActionResult> Nuevo([FromBody] Capacitador objeto)
         {
             await dbContext.Capacitadors.AddAsync(objeto);
             await dbContext.SaveChangesAsync();
 
-            return StatusCode(StatusCodes.Status200OK, new {mensaje = "ok"});
+            return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
         }
 
-        [HttpPost]
-        [Route("Editar")]
-
-
+        // POST: api/Capacitador/Editar
+        [HttpPost("Editar")]
         public async Task<IActionResult> Editar([FromBody] Capacitador objeto)
         {
             dbContext.Capacitadors.Update(objeto);
@@ -61,20 +69,19 @@ namespace SIGEMAC_ONPE.Controllers
             return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
         }
 
-        [HttpDelete]
-        [Route("Eliminar/{IdCapacitador:int}")]
+        // DELETE: api/Capacitador/Eliminar/5
+        [HttpDelete("Eliminar/{IdCapacitador:int}")]
         public async Task<IActionResult> Eliminar(int idCapacitador)
         {
-            var Capacitador = await dbContext.Capacitadors.FirstOrDefaultAsync(e => e.IdCapacitador == idCapacitador);
+            var capacitador = await dbContext.Capacitadors.FirstOrDefaultAsync(e => e.IdCapacitador == idCapacitador);
 
-            // Verificamos que el capacitador exista antes de intentar borrarlo
-            if (Capacitador != null)
+            if (capacitador != null)
             {
-                dbContext.Capacitadors.Remove(Capacitador);
+                dbContext.Capacitadors.Remove(capacitador);
                 await dbContext.SaveChangesAsync();
             }
 
-            return StatusCode(StatusCodes.Status200OK, Capacitador);
+            return StatusCode(StatusCodes.Status200OK, capacitador);
         }
     }
 }

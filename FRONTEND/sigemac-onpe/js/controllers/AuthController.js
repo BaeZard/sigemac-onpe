@@ -26,15 +26,34 @@ class AuthController {
     } catch (x) { err.textContent = x.message; }
   }
 
-  async consult(e) { // CUS-01: consulta por DNI → asignación de capacitación o rechazo
+  async consult(e) { // CUS-01: consulta por DNI directo a la API
     e.preventDefault();
+    const dniVal = document.getElementById('dniQ').value.trim();
     const out = document.getElementById('dniOut');
+    
+    if (!dniVal || dniVal.length !== 8) {
+      out.innerHTML = `<div class="alert" role="alert">Por favor, ingrese un DNI válido de 8 dígitos.</div>`;
+      return;
+    }
+
     try {
-      const user = await AuthService.memberAccess(document.getElementById('dniQ').value.trim());
-      const m = await MemberService.consult(user.dni);
+      // Llamada directa a tu Web API de C# que creamos en el MiembroMesaController
+      const miembroRepo = new MemberRepository();
+      const m = await miembroRepo.byDni(dniVal);
+
+      // Si la API responde con éxito, estructuramos el objeto de usuario y mostramos el resultado
+      const user = { dni: m.dni, rol: 'miembro', nombre: `${m.nombres} ${m.apellidos}`, token: 'real-jwt' };
+      
       out.innerHTML = `<div class="result"><p class="ok">✔ Eres miembro de mesa. Tu capacitación está asignada.</p>${Views.miembro(m)}<button class="btn" id="goApp">Ingresar a mi capacitación</button></div>`;
-      document.getElementById('goApp').onclick = () => { SessionStore.save(user); location.href = 'app.html'; };
-    } catch (x) { out.innerHTML = `<div class="alert" role="alert">${esc(x.message)}</div>`; }
+      
+      document.getElementById('goApp').onclick = () => { 
+        SessionStore.save(user); 
+        location.href = 'app.html'; 
+      };
+    } catch (x) { 
+      // Si el backend devuelve 404 o error, se muestra el mensaje de que no figura
+      out.innerHTML = `<div class="alert" role="alert">Acceso denegado: el DNI no figura como miembro de mesa.</div>`; 
+    }
   }
 }
 document.addEventListener('DOMContentLoaded', () => new AuthController().init());

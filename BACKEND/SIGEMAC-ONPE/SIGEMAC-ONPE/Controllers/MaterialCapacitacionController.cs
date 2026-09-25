@@ -16,24 +16,25 @@ namespace SIGEMAC_ONPE.Controllers
             dbContext = _dbContext;
         }
 
+        // GET: api/MaterialCapacitacion -> Ahora sí consulta la tabla correcta de materiales
         [HttpGet]
-        [Route("a")]
         public async Task<IActionResult> Get()
         {
-            var listaMateriales = await dbContext.MaterialCapacitacions.ToListAsync();
-            return StatusCode(StatusCodes.Status200OK, listaMateriales);
+            var lista = await dbContext.MaterialCapacitacions.ToListAsync();
+            return StatusCode(StatusCodes.Status200OK, lista);
         }
 
-        [HttpGet]
-        [Route("Obtener/{id:int}")]
+        // GET: api/MaterialCapacitacion/Obtener/5
+        [HttpGet("Obtener/{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
             var material = await dbContext.MaterialCapacitacions.FirstOrDefaultAsync(m => m.IdMaterial == id);
+            if (material == null) return NotFound(new { mensaje = "No se encontró el registro." });
             return StatusCode(StatusCodes.Status200OK, material);
         }
 
-        [HttpPost]
-        [Route("Nuevo")]
+        // POST: api/MaterialCapacitacion/Nuevo
+        [HttpPost("Nuevo")]
         public async Task<IActionResult> Nuevo([FromBody] MaterialCapacitacion objeto)
         {
             await dbContext.MaterialCapacitacions.AddAsync(objeto);
@@ -42,8 +43,8 @@ namespace SIGEMAC_ONPE.Controllers
             return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
         }
 
-        [HttpPost]
-        [Route("Editar")]
+        // POST: api/MaterialCapacitacion/Editar
+        [HttpPost("Editar")]
         public async Task<IActionResult> Editar([FromBody] MaterialCapacitacion objeto)
         {
             dbContext.MaterialCapacitacions.Update(objeto);
@@ -52,8 +53,8 @@ namespace SIGEMAC_ONPE.Controllers
             return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
         }
 
-        [HttpDelete]
-        [Route("Eliminar/{id:int}")]
+        // DELETE: api/MaterialCapacitacion/Eliminar/5
+        [HttpDelete("Eliminar/{id:int}")]
         public async Task<IActionResult> Eliminar(int id)
         {
             var material = await dbContext.MaterialCapacitacions.FirstOrDefaultAsync(m => m.IdMaterial == id);

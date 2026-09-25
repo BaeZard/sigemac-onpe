@@ -16,31 +16,29 @@ namespace SIGEMAC_ONPE.Controllers
             dbContext = _dbContext;
         }
 
+        // GET: api/SesionCapacitacion -> Resuelve SessionService.list() en el Front
         [HttpGet]
-        [Route("a")]
         public async Task<IActionResult> Get()
         {
-            // El Include nos trae los datos del Capacitador asignado a la sesión
-            var listaSesiones = await dbContext.SesionCapacitacions
-                .Include(s => s.IdCapacitadorNavigation)
-                .ToListAsync();
-
-            return StatusCode(StatusCodes.Status200OK, listaSesiones);
+            var lista = await dbContext.SesionCapacitacions.ToListAsync();
+            return StatusCode(StatusCodes.Status200OK, lista);
         }
 
-        [HttpGet]
-        [Route("Obtener/{id:int}")]
+        // GET: api/SesionCapacitacion/Obtener/5
+        [HttpGet("Obtener/{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
             var sesion = await dbContext.SesionCapacitacions
                 .Include(s => s.IdCapacitadorNavigation)
                 .FirstOrDefaultAsync(s => s.IdSesion == id);
 
+            if (sesion == null) return NotFound(new { mensaje = "Sesión no encontrada" });
+
             return StatusCode(StatusCodes.Status200OK, sesion);
         }
 
-        [HttpPost]
-        [Route("Nuevo")]
+        // POST: api/SesionCapacitacion/Nuevo
+        [HttpPost("Nuevo")]
         public async Task<IActionResult> Nuevo([FromBody] SesionCapacitacion objeto)
         {
             await dbContext.SesionCapacitacions.AddAsync(objeto);
@@ -49,8 +47,8 @@ namespace SIGEMAC_ONPE.Controllers
             return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
         }
 
-        [HttpPost]
-        [Route("Editar")]
+        // POST: api/SesionCapacitacion/Editar
+        [HttpPost("Editar")]
         public async Task<IActionResult> Editar([FromBody] SesionCapacitacion objeto)
         {
             dbContext.SesionCapacitacions.Update(objeto);
@@ -59,8 +57,8 @@ namespace SIGEMAC_ONPE.Controllers
             return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok" });
         }
 
-        [HttpDelete]
-        [Route("Eliminar/{id:int}")]
+        // DELETE: api/SesionCapacitacion/Eliminar/5
+        [HttpDelete("Eliminar/{id:int}")]
         public async Task<IActionResult> Eliminar(int id)
         {
             var sesion = await dbContext.SesionCapacitacions.FirstOrDefaultAsync(s => s.IdSesion == id);
