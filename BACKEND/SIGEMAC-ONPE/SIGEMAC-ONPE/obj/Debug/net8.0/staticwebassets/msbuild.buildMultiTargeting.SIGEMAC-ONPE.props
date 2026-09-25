@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\SIGEMAC-ONPE.props" />
-</Project>

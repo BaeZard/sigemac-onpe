@@ -63,13 +63,17 @@ namespace SIGEMAC_ONPE.Controllers
 
         [HttpDelete]
         [Route("Eliminar/{IdCapacitador:int}")]
-
-
         public async Task<IActionResult> Eliminar(int idCapacitador)
         {
             var Capacitador = await dbContext.Capacitadors.FirstOrDefaultAsync(e => e.IdCapacitador == idCapacitador);
-            dbContext.Capacitadors.Remove(Capacitador);
-            await dbContext.SaveChangesAsync();
+
+            // Verificamos que el capacitador exista antes de intentar borrarlo
+            if (Capacitador != null)
+            {
+                dbContext.Capacitadors.Remove(Capacitador);
+                await dbContext.SaveChangesAsync();
+            }
+
             return StatusCode(StatusCodes.Status200OK, Capacitador);
         }
     }
