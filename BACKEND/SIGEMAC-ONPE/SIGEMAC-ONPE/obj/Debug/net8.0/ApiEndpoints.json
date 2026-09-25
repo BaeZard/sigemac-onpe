@@ -1,0 +1,97 @@
+[
+  {
+    "ContainingType": "SIGEMAC_ONPE.Controllers.CapacitadorController",
+    "Method": "Get",
+    "RelativePath": "api/Capacitador/a",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SIGEMAC_ONPE.Controllers.CapacitadorController",
+    "Method": "Editar",
+    "RelativePath": "api/Capacitador/Editar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "objeto",
+        "Type": "SIGEMAC_ONPE.Models.Capacitador",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SIGEMAC_ONPE.Controllers.CapacitadorController",
+    "Method": "Eliminar",
+    "RelativePath": "api/Capacitador/Eliminar/{IdCapacitador}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idCapacitador",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SIGEMAC_ONPE.Controllers.CapacitadorController",
+    "Method": "Nuevo",
+    "RelativePath": "api/Capacitador/Nuevo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "objeto",
+        "Type": "SIGEMAC_ONPE.Models.Capacitador",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SIGEMAC_ONPE.Controllers.CapacitadorController",
+    "Method": "Get",
+    "RelativePath": "api/Capacitador/Obtener/{IdCapacitador}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idCapacitador",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SIGEMAC_ONPE.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SIGEMAC_ONPE.WeatherForecast, SIGEMAC-ONPE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "EndpointName": "GetWeatherForecast"
+  }
+]

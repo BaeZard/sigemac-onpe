@@ -4527,11 +4527,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\USUARIO\\Desktop\\ARQUITECTURA DE SOFTWARE\\CARLOS\\BACKEND\\SIGEMAC-ONPE\\SIGEMAC-ONPE\\SIGEMAC-ONPE.csproj",
+      "projectUniqueName": "C:\\Users\\USUARIO\\Desktop\\ARQUITECTURA DE SOFTWARE\\sigemac-onpe\\BACKEND\\SIGEMAC-ONPE\\SIGEMAC-ONPE\\SIGEMAC-ONPE.csproj",
       "projectName": "SIGEMAC-ONPE",
-      "projectPath": "C:\\Users\\USUARIO\\Desktop\\ARQUITECTURA DE SOFTWARE\\CARLOS\\BACKEND\\SIGEMAC-ONPE\\SIGEMAC-ONPE\\SIGEMAC-ONPE.csproj",
+      "projectPath": "C:\\Users\\USUARIO\\Desktop\\ARQUITECTURA DE SOFTWARE\\sigemac-onpe\\BACKEND\\SIGEMAC-ONPE\\SIGEMAC-ONPE\\SIGEMAC-ONPE.csproj",
       "packagesPath": "C:\\Users\\USUARIO\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\USUARIO\\Desktop\\ARQUITECTURA DE SOFTWARE\\CARLOS\\BACKEND\\SIGEMAC-ONPE\\SIGEMAC-ONPE\\obj\\",
+      "outputPath": "C:\\Users\\USUARIO\\Desktop\\ARQUITECTURA DE SOFTWARE\\sigemac-onpe\\BACKEND\\SIGEMAC-ONPE\\SIGEMAC-ONPE\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\USUARIO\\AppData\\Roaming\\NuGet\\NuGet.Config",

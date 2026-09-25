@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KunXeELEsEw=",
+  "dgSpecHash": "crYnnKX2E3Q=",
   "success": true,
-  "projectFilePath": "C:\\Users\\USUARIO\\Desktop\\ARQUITECTURA DE SOFTWARE\\CARLOS\\BACKEND\\SIGEMAC-ONPE\\SIGEMAC-ONPE\\SIGEMAC-ONPE.csproj",
+  "projectFilePath": "C:\\Users\\USUARIO\\Desktop\\ARQUITECTURA DE SOFTWARE\\sigemac-onpe\\BACKEND\\SIGEMAC-ONPE\\SIGEMAC-ONPE\\SIGEMAC-ONPE.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\USUARIO\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\USUARIO\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

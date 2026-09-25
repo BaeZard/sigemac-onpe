@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIGEMAC-ONPE", "SIGEMAC-ONPE\SIGEMAC-ONPE.csproj", "{848A71B9-56D9-4D76-B873-DDC5F9AB42EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIGEMAC-ONPE", "SIGEMAC-ONPE\SIGEMAC-ONPE.csproj", "{848A71B9-56D9-4D76-B873-DDC5F9AB42EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
