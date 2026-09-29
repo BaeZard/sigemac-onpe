@@ -40,7 +40,7 @@ class Views {
     const s = m.sesion;
     return `<div class="panel"><h3>${esc(m.nombre)}</h3>
       <p class="muted">${esc(m.cargo)} · ${esc(m.local)}</p>
-      <p style="margin:.8rem 0">${s ? `Capacitación: <b>${esc(s.fecha)} ${esc(s.hora)}</b> (${esc(s.modalidad)}) — ${esc(s.sede)}` : 'Aún sin sesión asignada.'}</p>
+      <p style="margin:.8rem 0">${s ? `Capacitación: <b>${esc(s.fecha)}${esc(s.hora)}</b> (${esc(s.modalidad)}) —${esc(s.sede)}` : 'Aún sin sesión asignada.'}</p>
       <span class="tag">${this.estado(m)}</span></div>`;
   }
 
@@ -101,6 +101,17 @@ class Views {
   /* ---------- Coordinador ---------- */
   static coord(r, d) {
     const { ses, mie, mat, res } = d, selSes = this.sel(ses), h = hoy();
+    
+    // 🔥 FIX: Valores por defecto para evitar errores (toLocaleString, etc.)
+    res.capacitados = res.capacitados || 0;
+    res.proceso = res.proceso || 0;
+    res.pendientes = res.pendientes || 0;
+    res.sesiones = res.sesiones || 0;
+    res.asistencia = res.asistencia || 0;
+    res.cumplimiento = res.cumplimiento || 0;
+    res.regiones = res.regiones || [];
+    res.tendencia = res.tendencia || [];
+
     const pres = mie.filter(m => m.asistio === true).length, marc = mie.filter(m => m.asistio !== null).length;
     const pend = mie.filter(m => m.asistio === null), reg = res.regiones.map(x => [x.n, x.p]);
     const sesDe = m => ses.find(s => s.id === m.sesionId)?.etiqueta || 'Sin sesión';
@@ -145,6 +156,10 @@ class Views {
 
   /* ---------- Capacitador ---------- */
   static cap(r, d) {
+    // 🔥 FIX: Prevención para los gráficos (error de length)
+    d.res = d.res || {};
+    d.res.tendencia = d.res.tendencia || [];
+
     const mine = d.ses.filter(s => s.capacitador === d.u.dni), ids = mine.map(s => s.id), h = hoy();
     const ms = d.mie.filter(m => ids.includes(m.sesionId)), prox = mine.filter(s => s.fecha >= h);
     const H = ['Fecha', 'Hora', 'Lugar / enlace', 'Modalidad', 'Participantes'];
@@ -178,7 +193,12 @@ class Views {
 
   /* ---------- Asistente Logístico ---------- */
   static log(r, d) {
-    const { mat, ses, inc } = d, h = hoy(), selSes = this.sel(ses);
+    const { mat, ses, inc = [] } = d, h = hoy(), selSes = this.sel(ses);
+
+    // 🔥 FIX: Valores por defecto para evitar el error de map
+    d.res = d.res || {};
+    d.res.stock = d.res.stock || [];
+
     const noDisp = mat.filter(m => m.estado !== 'Disponible'), tit = id => mat.find(m => m.id === id)?.titulo || '—';
     const estD = s => !s.materialIds.length ? 'Sin material' : s.materialIds.every(id => mat.find(m => m.id === id)?.estado === 'Disponible') ? 'Completo' : 'Pendiente';
     const dist = s => [s.etiqueta, s.materialIds.map(tit).join(', ') || 'Sin material', this.tag(estD(s))];
@@ -187,10 +207,12 @@ class Views {
     const invent = this.table(['Material', 'Tipo', 'Disponibilidad'], mat.map(m => [m.titulo, this.tag(m.tipo), this.tag(m.estado)]));
     return {
       inicio: () => {
-        const st = d.res.stock, sum = k => st.reduce((a, x) => a + x[k], 0), mx = Math.max(...st.map(x => x.disp));
+        const st = d.res.stock, sum = k => st.reduce((a, x) => a + x[k], 0);
+        // 🔥 FIX: Math.max protegido para evitar colapso si st está vacío
+        const mx = Math.max(1, ...st.map(x => x.disp || 0)); 
         const alertas = [...noDisp.map(m => [m.estado === 'Agotado' ? '🔴' : '🟠', 'Material ' + (m.estado === 'Agotado' ? 'faltante' : 'pendiente'), m.titulo]), ...inc.filter(i => i.estado === 'Abierta').map(i => ['🟡', i.tipo, i.detalle])];
         return this.head('Panel Logístico', `Asistente: ${d.u.nombre} · DNI ${d.u.dni}`) +
-          this.stats([['Materiales disponibles', sum('disp').toLocaleString('es-PE'), 'Inventario activo', GREEN, '📦'], ['Materiales distribuidos', sum('dist'), Math.round(sum('dist') * 100 / sum('disp')) + '% del total', NAVY, '✅'], ['Materiales pendientes', sum('pend'), 'Requieren distribución', GOLD, '⏳'], ['Alertas activas', alertas.length, 'Material faltante / pendiente', RED, '⚠️']]) +
+          this.stats([['Materiales disponibles', sum('disp').toLocaleString('es-PE'), 'Inventario activo', GREEN, '📦'], ['Materiales distribuidos', sum('dist'), Math.round(sum('dist') * 100 / (sum('disp') || 1)) + '% del total', NAVY, '✅'], ['Materiales pendientes', sum('pend'), 'Requieren distribución', GOLD, '⏳'], ['Alertas activas', alertas.length, 'Material faltante / pendiente', RED, '⚠️']]) +
           this.row2(this.panel('Disponibilidad por tipo de material', st.map(x => `<div class="hb"><span>${esc(x.n)}</span><div class="stack"><i style="width:${x.dist * 100 / mx}%;background:${GREEN}"></i><i style="width:${x.pend * 100 / mx}%;background:${GOLD}"></i></div><small>${x.dist}/${x.disp}</small></div>`).join('') + Charts.legend([['Distribuido', GREEN], ['Pendiente', GOLD]])),
             this.panel('Material asignado por sesión', ses.map(s => `<div class="sitem"><div><div class="t">${esc(s.sede)}</div><small>${esc(s.fecha)} · ${esc(s.materialIds.map(tit).join(', ') || 'Sin material')}</small></div>${this.tag(estD(s)).raw}</div>`).join('') || '<p class="muted">Sin sesiones.</p>')) +
           this.panel('⚠️ Alertas e incidencias activas', alertas.map(([e, t, x]) => `<div class="sitem"><span>${e}</span><div><div class="t">${esc(t)}</div><small>${esc(x)}</small></div></div>`).join('') || '<p class="muted">Sin alertas activas.</p>');

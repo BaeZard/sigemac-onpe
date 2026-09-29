@@ -17,7 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\CU10_EjecutarIngestaETL\" />
     <Folder Include="Models\" />
+    <Folder Include="Services\CU10_EjecutarIngestaETL\" />
   </ItemGroup>
 
 </Project>

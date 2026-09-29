@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using SIGEMAC_ONPE.Models;
 using Microsoft.EntityFrameworkCore;
+using SIGEMAC_ONPE.Data;
 
 namespace SIGEMAC_ONPE.Controllers
 {

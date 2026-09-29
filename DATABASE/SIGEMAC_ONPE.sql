@@ -107,3 +107,16 @@ CREATE TABLE SesionMaterial (
         FOREIGN KEY (IdMaterial) REFERENCES MaterialCapacitacion(IdMaterial)
 );
 GO
+
+
+USE SigemacOnpe;
+GO
+
+SELECT * FROM [dbo].[Asistencia]
+SELECT * FROM [dbo].[Capacitador]
+SELECT * FROM [dbo].[MaterialCapacitacion]
+SELECT * FROM [dbo].[MiembroMesa]
+SELECT * FROM [dbo].[ODPE]
+SELECT * FROM [dbo].[SesionCapacitacion]
+SELECT * FROM [dbo].[SesionMaterial]
+SELECT * FROM [dbo].[Usuario]

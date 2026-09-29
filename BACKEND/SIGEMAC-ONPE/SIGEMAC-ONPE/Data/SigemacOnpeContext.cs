@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using SIGEMAC_ONPE.Models;
 
-namespace SIGEMAC_ONPE.Models;
+namespace SIGEMAC_ONPE.Data;
 
 public partial class SigemacOnpeContext : DbContext
 {

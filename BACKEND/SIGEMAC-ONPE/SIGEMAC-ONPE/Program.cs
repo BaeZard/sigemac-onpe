@@ -1,5 +1,5 @@
-using SIGEMAC_ONPE.Models;
 using Microsoft.EntityFrameworkCore;
+using SIGEMAC_ONPE.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
