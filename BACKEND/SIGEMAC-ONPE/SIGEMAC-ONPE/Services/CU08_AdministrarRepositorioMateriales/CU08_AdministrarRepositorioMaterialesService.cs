@@ -5,7 +5,7 @@ namespace SIGEMAC_ONPE.Controllers.CU08_AdministrarRepositorioMateriales
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CU08_AdministrarRepositorioMaterialesController : ControllerBase
+    public class CU08_AdministrarRepositorioMaterialesService : ControllerBase
     {
     }
 }

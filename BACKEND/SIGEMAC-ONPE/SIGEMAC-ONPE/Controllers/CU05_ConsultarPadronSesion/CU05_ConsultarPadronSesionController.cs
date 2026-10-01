@@ -5,7 +5,7 @@ namespace SIGEMAC_ONPE.Controllers.CU05_ConsultarPadronSesion
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CU05_ConsultarPadronSesionController : ControllerBase
+    public class CU05_ConsultarPadronSesionService : ControllerBase
     {
     }
 }

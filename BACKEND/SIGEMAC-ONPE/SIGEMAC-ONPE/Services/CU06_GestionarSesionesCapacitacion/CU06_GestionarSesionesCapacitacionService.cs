@@ -5,7 +5,7 @@ namespace SIGEMAC_ONPE.Controllers.CU06_GestionarSesionesCapacitacion
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CU06_GestionarSesionesCapacitacionController : ControllerBase
+    public class CU06_GestionarSesionesCapacitacionService : ControllerBase
     {
     }
 }

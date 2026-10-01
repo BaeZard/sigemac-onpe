@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SIGEMAC_ONPE.Controllers.CU05_ConsultarPadronSesion
+namespace SIGEMAC_ONPE.Services.CU09_GenerarReportesDashboards
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CU05_ConsultarPadronSesionController : ControllerBase
+    public class ICU09_GenerarReportesDashboardsService : ControllerBase
     {
     }
 }

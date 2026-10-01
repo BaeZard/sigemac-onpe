@@ -5,7 +5,7 @@ namespace SIGEMAC_ONPE.Controllers.CU07_AsignarParticipantesCapacitadores
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CU07_AsignarParticipantesCapacitadoresController : ControllerBase
+    public class CU07_AsignarParticipantesCapacitadoresService : ControllerBase
     {
     }
 }

@@ -5,7 +5,7 @@ namespace SIGEMAC_ONPE.Controllers.CU09_GenerarReportesDashboards
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CU09_GenerarReportesDashboardsController : ControllerBase
+    public class CU09_GenerarReportesDashboardsService : ControllerBase
     {
     }
 }

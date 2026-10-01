@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SIGEMAC_ONPE.Services.CU03_AutenticarUsuarioSesion
+namespace SIGEMAC_ONPE.Services.CU11_GestionarCuentasAccesos
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CU03AutenticarUsuarioSesionService : ControllerBase
+    public class ICU11_GestionarCuentasAccesosService : ControllerBase
     {
     }
 }

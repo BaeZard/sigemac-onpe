@@ -3,7 +3,7 @@ const CONFIG = {
   SERVICES: {
     auth: 'http://localhost:5130/api/Auth',
     sessions: 'http://localhost:5130/api/SesionCapacitacion',
-    members: 'http://localhost:5130/api/MiembroMesa',
+    members: 'http://localhost:5130/api/cus01', // 👉 ¡Aquí está el cambio clave!
     attendance: 'http://localhost:5130/api/Asistencia',
     materials: 'http://localhost:5130/api/MaterialCapacitacion',
     reports: 'http://localhost:5130/api/Reports',

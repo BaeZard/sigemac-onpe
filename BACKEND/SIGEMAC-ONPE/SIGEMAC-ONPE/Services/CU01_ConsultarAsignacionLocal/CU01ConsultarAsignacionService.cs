@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace SIGEMAC_ONPE.Controllers.CU01_ConsultarAsignacionLocal
+﻿namespace SIGEMAC_ONPE.Services.CU01_ConsultarAsignacionLocal
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CU01ConsultarAsignacionService : ControllerBase
+    public interface ICU01ConsultarAsignacionService
     {
+        Task<object?> ConsultarAsignacionPorDniAsync(string dni);
     }
 }
