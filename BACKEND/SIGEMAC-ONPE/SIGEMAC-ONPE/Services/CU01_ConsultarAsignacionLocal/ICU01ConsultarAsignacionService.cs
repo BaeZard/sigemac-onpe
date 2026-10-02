@@ -33,5 +33,25 @@ namespace SIGEMAC_ONPE.Services.CU01_ConsultarAsignacionLocal
                 sesionId = 1
             };
         }
+
+        public async Task<IEnumerable<object>> ObtenerTodosLosMiembrosAsync()
+        {
+            var miembros = await _dbContext.MiembroMesas
+                .Include(m => m.IdOdpeNavigation)
+                .ToListAsync();
+
+            return miembros.Select(miembro => new
+            {
+                dni = miembro.Dni,
+                nombre = $"{miembro.Nombres} {miembro.Apellidos}",
+                nombres = miembro.Nombres,
+                apellidos = miembro.Apellidos,
+                cargo = miembro.Cargo,
+                estadoCapacitacion = miembro.EstadoCapacitacion,
+                local = miembro.IdOdpeNavigation?.Direccion ?? "Sede Principal ODPE",
+                region = miembro.IdOdpeNavigation?.Region ?? "Lima",
+                sesionId = 1
+            });
+        }
     }
 }

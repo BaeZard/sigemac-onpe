@@ -32,7 +32,17 @@ builder.Services.AddCors(options =>
     });
 });
 
+//Registro de Inyeccion de dependencia del CU02
+builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU02_VisualizarDescargarMaterial.ICU02VisualizarDescargarMaterialService, SIGEMAC_ONPE.Services.CU02_VisualizarDescargarMaterial.CU02VisualizarDescargarMaterialService>();
+
+builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU03_AutenticarUsuario.ICU03AutenticarUsuarioService, SIGEMAC_ONPE.Services.CU03_AutenticarUsuario.CU03AutenticarUsuarioService>();
+
+builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante.ICU04RegistrarAsistenciaParticipanteService, SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante.CU04RegistrarAsistenciaParticipanteService>();
+
+builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion.ICU05ConsultarPadronSesionService, SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion.CU05ConsultarPadronSesionService>();
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

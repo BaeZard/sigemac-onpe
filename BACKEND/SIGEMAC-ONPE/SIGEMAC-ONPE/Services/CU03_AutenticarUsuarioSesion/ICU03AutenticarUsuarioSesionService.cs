@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace SIGEMAC_ONPE.Services.CU03_AutenticarUsuarioSesion
+﻿namespace SIGEMAC_ONPE.Services.CU03_AutenticarUsuario
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ICU03AutenticarUsuarioSesionService : ControllerBase
+    public interface ICU03AutenticarUsuarioService
     {
+        // Retorna un objeto con los datos del usuario si el login es exitoso, o null si falla.
+        Task<object?> AutenticarAsync(string rol, string dni, string password);
     }
 }

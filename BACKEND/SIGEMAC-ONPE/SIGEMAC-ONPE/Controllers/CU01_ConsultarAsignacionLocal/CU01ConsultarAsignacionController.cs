@@ -27,5 +27,12 @@ namespace SIGEMAC_ONPE.Controllers.CU01_ConsultarAsignacionLocal
 
             return StatusCode(StatusCodes.Status200OK, resultado);
         }
+
+        [HttpGet("a")]
+        public async Task<IActionResult> ListarMiembrosAsignados()
+        {
+            var resultado = await _service.ObtenerTodosLosMiembrosAsync();
+            return Ok(resultado);
+        }
     }
 }

@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante
+﻿namespace SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ICU04RegistrarAsistenciaParticipantesService : ControllerBase
+    public interface ICU04RegistrarAsistenciaParticipanteService
     {
+        Task<bool> RegistrarAsistenciaAsync(string dniMiembro, int idSesion, bool asistio);
     }
 }

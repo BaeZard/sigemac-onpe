@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion
+﻿namespace SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CU05_ConsultarPadronSesionService : ControllerBase
+    public interface ICU05ConsultarPadronSesionService
     {
+        Task<IEnumerable<object>> ObtenerSesionesConPadronAsync(string? dniCapacitador = null);
     }
 }

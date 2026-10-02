@@ -5,7 +5,7 @@ const CONFIG = {
     sessions: 'http://localhost:5130/api/SesionCapacitacion',
     members: 'http://localhost:5130/api/cus01', // 👉 ¡Aquí está el cambio clave!
     attendance: 'http://localhost:5130/api/Asistencia',
-    materials: 'http://localhost:5130/api/MaterialCapacitacion',
+    materials: 'http://localhost:5130/api/cus02',
     reports: 'http://localhost:5130/api/Reports',
     incidents: 'http://localhost:5130/api/Incidents'
   },
