@@ -61,7 +61,7 @@ SIGEMAC-ONPE/
 * **Procesamiento de Datos:** Python 3, Pandas, Google Colab
 * **Integración de Datos:** SQL Server Integration Services (SSIS)
 * **Base de Datos:** SQL Server
-* **Backend:** C# (.NET Core Web API), Entity Framework Core[cite: 2]
+* **Backend:** C# (.NET Core Web API), Entity Framework Core
 * **Frontend:** Vanilla JS (ES6 Modules), HTML5, CSS3
 
 ---
