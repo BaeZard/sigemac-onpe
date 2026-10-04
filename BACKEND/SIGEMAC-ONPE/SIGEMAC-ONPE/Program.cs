@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SIGEMAC_ONPE.Data;
 using SIGEMAC_ONPE.Services.CU01_ConsultarAsignacionLocal;
+using SIGEMAC_ONPE.Services.CU06_GestionarSesionesCapacitacion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,8 @@ builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU03_AutenticarUsuario.ICU03Aut
 builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante.ICU04RegistrarAsistenciaParticipanteService, SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante.CU04RegistrarAsistenciaParticipanteService>();
 
 builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion.ICU05ConsultarPadronSesionService, SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion.CU05ConsultarPadronSesionService>();
+
+builder.Services.AddScoped<ICU06_GestionarSesionesCapacitacionService, CU06_GestionarSesionesCapacitacionService>();
 var app = builder.Build();
 
 

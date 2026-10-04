@@ -22,15 +22,16 @@ class SessionRepository extends Repository {
   list() { 
     return this.call('', 'GET', null).then(r => r.map(x => new Sesion(x))); 
   }
-  // Coincide con SesionCapacitacionController -> [HttpPost("Editar")]
-  update(p) { 
-    return this.call('/Editar', 'POST', p); 
+  
+  // 👉 ACTUALIZA ESTA LÍNEA (para que reciba el id y el objeto correctamente)
+  update(id, p) { 
+    return this.call('/Editar/' + id, 'POST', p); 
   }
-  // Coincide con SesionCapacitacionController -> [HttpPost("Nuevo")]
+
   create(s) {
     return this.call('/Nuevo', 'POST', s);
   }
-  // Coincide con SesionCapacitacionController -> [HttpDelete("Eliminar/{id:int}")]
+  
   delete(id) {
     return this.call('/Eliminar/' + id, 'DELETE', null);
   }

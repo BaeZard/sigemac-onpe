@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
 
 namespace SIGEMAC_ONPE.Services.CU06_GestionarSesionesCapacitacion
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ICU06_GestionarSesionesCapacitacionService : ControllerBase
+    public interface ICU06_GestionarSesionesCapacitacionService
     {
+        Task<bool> CrearSesionAsync(SesionCapacitacionDTO dto);
+        Task<bool> ActualizarSesionAsync(int idSesion, SesionCapacitacionDTO dto);
+        Task<bool> EliminarSesionAsync(int idSesion);
     }
 }
