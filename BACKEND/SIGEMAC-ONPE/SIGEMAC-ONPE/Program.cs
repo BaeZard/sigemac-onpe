@@ -1,30 +1,38 @@
 using Microsoft.EntityFrameworkCore;
 using SIGEMAC_ONPE.Data;
 using SIGEMAC_ONPE.Services.CU01_ConsultarAsignacionLocal;
+using SIGEMAC_ONPE.Services.CU02_VisualizarDescargarMaterial;
+using SIGEMAC_ONPE.Services.CU03_AutenticarUsuario;
+using SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante;
+using SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion;
 using SIGEMAC_ONPE.Services.CU06_GestionarSesionesCapacitacion;
+using SIGEMAC_ONPE.Services.CU07_AsignarParticipantesCapacitadores;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Configuración de serialización y controladores.
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    // Esta l�nea corta los bucles infinitos en las respuestas JSON
+    // Evita ciclos al serializar entidades con propiedades de navegación.
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Acceso a SQL Server y servicios de los casos de uso implementados.
 builder.Services.AddDbContext<SigemacOnpeContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CadenaSQL"));
-});
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CadenaSQL")));
 
-// Registro de Inyecci�n de Dependencias del CU01
 builder.Services.AddScoped<ICU01ConsultarAsignacionService, CU01ConsultarAsignacionService>();
+builder.Services.AddScoped<ICU02VisualizarDescargarMaterialService, CU02VisualizarDescargarMaterialService>();
+builder.Services.AddScoped<ICU03AutenticarUsuarioService, CU03AutenticarUsuarioService>();
+builder.Services.AddScoped<ICU04RegistrarAsistenciaParticipanteService, CU04RegistrarAsistenciaParticipanteService>();
+builder.Services.AddScoped<ICU05ConsultarPadronSesionService, CU05ConsultarPadronSesionService>();
+builder.Services.AddScoped<ICU06_GestionarSesionesCapacitacionService, CU06_GestionarSesionesCapacitacionService>();
+builder.Services.AddScoped<ICU07_AsignarParticipantesCapacitadoresService, CU07_AsignarParticipantesCapacitadoresService>();
 
+// Política CORS para permitir las llamadas del cliente web.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("NuevaPolitica", app =>
@@ -33,21 +41,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-//Registro de Inyeccion de dependencia del CU02
-builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU02_VisualizarDescargarMaterial.ICU02VisualizarDescargarMaterialService, SIGEMAC_ONPE.Services.CU02_VisualizarDescargarMaterial.CU02VisualizarDescargarMaterialService>();
-
-builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU03_AutenticarUsuario.ICU03AutenticarUsuarioService, SIGEMAC_ONPE.Services.CU03_AutenticarUsuario.CU03AutenticarUsuarioService>();
-
-builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante.ICU04RegistrarAsistenciaParticipanteService, SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante.CU04RegistrarAsistenciaParticipanteService>();
-
-builder.Services.AddScoped<SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion.ICU05ConsultarPadronSesionService, SIGEMAC_ONPE.Services.CU05_ConsultarPadronSesion.CU05ConsultarPadronSesionService>();
-
-builder.Services.AddScoped<ICU06_GestionarSesionesCapacitacionService, CU06_GestionarSesionesCapacitacionService>();
 var app = builder.Build();
 
-
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

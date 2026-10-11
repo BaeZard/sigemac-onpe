@@ -2,6 +2,8 @@
 {
     public interface ICU04RegistrarAsistenciaParticipanteService
     {
-        Task<bool> RegistrarAsistenciaAsync(string dniMiembro, int idSesion, bool asistio);
+        Task<CU04_ResultadoRegistro> RegistrarAsistenciasAsync(
+            int idSesion,
+            IReadOnlyCollection<CU04_RegistroAsistenciaDTO> registros);
     }
 }

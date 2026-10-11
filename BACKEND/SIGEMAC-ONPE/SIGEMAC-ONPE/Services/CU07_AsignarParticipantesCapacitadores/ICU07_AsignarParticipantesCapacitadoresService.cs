@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace SIGEMAC_ONPE.Services.CU07_AsignarParticipantesCapacitadores;
 
-namespace SIGEMAC_ONPE.Services.CU07_AsignarParticipantesCapacitadores
+public interface ICU07_AsignarParticipantesCapacitadoresService
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ICU07_AsignarParticipantesCapacitadoresService : ControllerBase
-    {
-    }
+    Task<CU07_ResultadoAsignacion> AsignarParticipanteAsync(string dni, int sesionId);
+    Task<CU07_ResultadoAsignacion> AsignarCapacitadorAsync(int sesionId, string dni);
+    Task<IReadOnlyList<CU07_MiembroAsignadoDTO>> ObtenerParticipantesPorSesionAsync(int sesionId);
 }

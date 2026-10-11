@@ -13,4 +13,12 @@ namespace SIGEMAC_ONPE.Services.CU06_GestionarSesionesCapacitacion
         public string? Capacitador { get; set; } // DNI recibido al asignar capacitador
         public List<int>? MaterialIds { get; set; }
     }
+
+    public enum CU06_ResultadoActualizacion
+    {
+        Actualizado,
+        SesionNoEncontrada,
+        SolicitudInvalida,
+        CapacitadorNoEncontrado
+    }
 }

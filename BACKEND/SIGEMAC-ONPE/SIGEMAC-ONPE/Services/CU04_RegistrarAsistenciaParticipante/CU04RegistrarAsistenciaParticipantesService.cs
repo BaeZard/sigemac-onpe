@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SIGEMAC_ONPE.Data;
-using SIGEMAC_ONPE.Models;
 
 namespace SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante
 {
@@ -13,38 +12,54 @@ namespace SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante
             _dbContext = dbContext;
         }
 
-        public async Task<bool> RegistrarAsistenciaAsync(string dniMiembro, int idSesion, bool asistio)
+        public async Task<CU04_ResultadoRegistro> RegistrarAsistenciasAsync(
+            int idSesion,
+            IReadOnlyCollection<CU04_RegistroAsistenciaDTO> registros)
         {
-            try
+            if (idSesion <= 0 || registros is null || registros.Count == 0)
             {
-                var registroExistente = await _dbContext.Set<Asistencium>()
-                    .FirstOrDefaultAsync(a => a.DniMiembroMesa == dniMiembro && a.IdSesion == idSesion);
-
-                if (registroExistente != null)
-                {
-                    registroExistente.Asistio = asistio;
-                    registroExistente.FechaRegistro = DateTime.Now;
-                    _dbContext.Set<Asistencium>().Update(registroExistente);
-                }
-                else
-                {
-                    var nuevaAsistencia = new Asistencium
-                    {
-                        DniMiembroMesa = dniMiembro,
-                        IdSesion = idSesion,
-                        Asistio = asistio,
-                        FechaRegistro = DateTime.Now
-                    };
-                    await _dbContext.Set<Asistencium>().AddAsync(nuevaAsistencia);
-                }
-
-                await _dbContext.SaveChangesAsync();
-                return true;
+                return CU04_ResultadoRegistro.SolicitudInvalida;
             }
-            catch (Exception)
+
+            var normalizados = registros
+                .Select(r => new CU04_RegistroAsistenciaDTO
+                {
+                    Dni = r.Dni?.Trim() ?? string.Empty,
+                    Asistio = r.Asistio
+                })
+                .ToList();
+
+            if (normalizados.Any(r => r.Dni.Length != 8 || !r.Dni.All(char.IsAsciiDigit)) ||
+                normalizados.Select(r => r.Dni).Distinct(StringComparer.Ordinal).Count() != normalizados.Count)
             {
-                return false;
+                return CU04_ResultadoRegistro.SolicitudInvalida;
             }
+
+            var sesionExiste = await _dbContext.SesionCapacitacions.AnyAsync(s => s.IdSesion == idSesion);
+            if (!sesionExiste)
+            {
+                return CU04_ResultadoRegistro.SesionNoEncontrada;
+            }
+
+            var dnis = normalizados.Select(r => r.Dni).ToList();
+            var asistencias = await _dbContext.Asistencia
+                .Where(a => a.IdSesion == idSesion && dnis.Contains(a.DniMiembroMesa))
+                .ToListAsync();
+
+            if (asistencias.Count != dnis.Count)
+            {
+                return CU04_ResultadoRegistro.ParticipanteNoAsignado;
+            }
+
+            var estadoPorDni = normalizados.ToDictionary(r => r.Dni, r => r.Asistio, StringComparer.Ordinal);
+            foreach (var asistencia in asistencias)
+            {
+                asistencia.Asistio = estadoPorDni[asistencia.DniMiembroMesa];
+                asistencia.FechaRegistro = DateTime.Now;
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return CU04_ResultadoRegistro.Registrado;
         }
     }
 }

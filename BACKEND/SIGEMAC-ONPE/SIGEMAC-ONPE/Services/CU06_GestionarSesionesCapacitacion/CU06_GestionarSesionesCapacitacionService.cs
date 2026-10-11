@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SIGEMAC_ONPE.Data;
 using SIGEMAC_ONPE.Models;
+using SIGEMAC_ONPE.Services.CU07_AsignarParticipantesCapacitadores;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +11,14 @@ namespace SIGEMAC_ONPE.Services.CU06_GestionarSesionesCapacitacion
     public class CU06_GestionarSesionesCapacitacionService : ICU06_GestionarSesionesCapacitacionService
     {
         private readonly SigemacOnpeContext _dbContext;
+        private readonly ICU07_AsignarParticipantesCapacitadoresService _asignacionService;
 
-        public CU06_GestionarSesionesCapacitacionService(SigemacOnpeContext dbContext)
+        public CU06_GestionarSesionesCapacitacionService(
+            SigemacOnpeContext dbContext,
+            ICU07_AsignarParticipantesCapacitadoresService asignacionService)
         {
             _dbContext = dbContext;
+            _asignacionService = asignacionService;
         }
 
         public async Task<bool> CrearSesionAsync(SesionCapacitacionDTO dto)
@@ -43,21 +48,26 @@ namespace SIGEMAC_ONPE.Services.CU06_GestionarSesionesCapacitacion
             }
         }
 
-        public async Task<bool> ActualizarSesionAsync(int idSesion, SesionCapacitacionDTO dto)
+        public async Task<CU06_ResultadoActualizacion> ActualizarSesionAsync(int idSesion, SesionCapacitacionDTO dto)
         {
             var sesion = await _dbContext.SesionCapacitacions.FindAsync(idSesion);
-            if (sesion == null) return false;
+            if (sesion == null) return CU06_ResultadoActualizacion.SesionNoEncontrada;
 
             // Si llega un DNI de capacitador (desde la pestaña Asignar capacitadores)
             if (!string.IsNullOrEmpty(dto.Capacitador))
             {
-                var capacitador = await _dbContext.Capacitadors
-                    .Include(c => c.IdUsuarioNavigation)
-                    .FirstOrDefaultAsync(c => c.IdUsuarioNavigation.Username == dto.Capacitador);
-
-                if (capacitador != null)
+                var resultado = await _asignacionService.AsignarCapacitadorAsync(idSesion, dto.Capacitador);
+                if (resultado == CU07_ResultadoAsignacion.SolicitudInvalida)
                 {
-                    sesion.IdCapacitador = capacitador.IdCapacitador;
+                    return CU06_ResultadoActualizacion.SolicitudInvalida;
+                }
+                if (resultado == CU07_ResultadoAsignacion.CapacitadorNoEncontrado)
+                {
+                    return CU06_ResultadoActualizacion.CapacitadorNoEncontrado;
+                }
+                if (resultado != CU07_ResultadoAsignacion.Exitoso)
+                {
+                    return CU06_ResultadoActualizacion.SesionNoEncontrada;
                 }
             }
 
@@ -76,9 +86,8 @@ namespace SIGEMAC_ONPE.Services.CU06_GestionarSesionesCapacitacion
                 _dbContext.SesionMaterials.AddRange(nuevosMateriales);
             }
 
-            _dbContext.SesionCapacitacions.Update(sesion);
             await _dbContext.SaveChangesAsync();
-            return true;
+            return CU06_ResultadoActualizacion.Actualizado;
         }
 
         public async Task<bool> EliminarSesionAsync(int idSesion)

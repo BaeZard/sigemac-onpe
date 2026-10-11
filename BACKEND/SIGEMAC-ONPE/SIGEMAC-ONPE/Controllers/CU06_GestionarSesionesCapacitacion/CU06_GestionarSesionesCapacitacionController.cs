@@ -26,9 +26,15 @@ namespace SIGEMAC_ONPE.Controllers.CU06_GestionarSesionesCapacitacion
         [HttpPost("Editar/{id}")]
         public async Task<IActionResult> Editar(int id, [FromBody] SesionCapacitacionDTO dto)
         {
-            var exito = await _service.ActualizarSesionAsync(id, dto);
-            if (!exito) return NotFound(new { mensaje = "No se pudo actualizar la sesión." });
-            return Ok(new { mensaje = "Sesión actualizada correctamente." });
+            var resultado = await _service.ActualizarSesionAsync(id, dto);
+            return resultado switch
+            {
+                CU06_ResultadoActualizacion.Actualizado => Ok(new { mensaje = "Sesión actualizada correctamente." }),
+                CU06_ResultadoActualizacion.SesionNoEncontrada => NotFound(new { mensaje = "Sesión no encontrada." }),
+                CU06_ResultadoActualizacion.CapacitadorNoEncontrado => NotFound(new { mensaje = "No se encontró un capacitador con ese DNI." }),
+                CU06_ResultadoActualizacion.SolicitudInvalida => BadRequest(new { mensaje = "El DNI del capacitador o los datos enviados no son válidos." }),
+                _ => StatusCode(StatusCodes.Status500InternalServerError)
+            };
         }
 
         [HttpDelete("Eliminar/{id}")]

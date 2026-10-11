@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SIGEMAC_ONPE.Services.CU04_RegistrarAsistenciaParticipante;
 
 namespace SIGEMAC_ONPE.Controllers.CU04_RegistrarAsistenciaParticipante
 {
-    // Ruta exacta según tu config.js
     [Route("api/Asistencia")]
     [ApiController]
     public class CU04Controller : ControllerBase
@@ -16,24 +14,23 @@ namespace SIGEMAC_ONPE.Controllers.CU04_RegistrarAsistenciaParticipante
             _service = service;
         }
 
-        public class AsistenciaRequest
+        [HttpPost("{sesionId:int}")]
+        public async Task<IActionResult> RegistrarAsistenciaLote(
+            int sesionId,
+            [FromBody] CU04_RegistroAsistenciaRequest request)
         {
-            public string DniMiembro { get; set; } = string.Empty;
-            public int IdSesion { get; set; }
-            public bool Asistio { get; set; }
-        }
+            var resultado = await _service.RegistrarAsistenciasAsync(
+                sesionId,
+                request.Registros ?? new List<CU04_RegistroAsistenciaDTO>());
 
-        [HttpPost]
-        public async Task<IActionResult> RegistrarAsistencia([FromBody] AsistenciaRequest request)
-        {
-            var exito = await _service.RegistrarAsistenciaAsync(request.DniMiembro, request.IdSesion, request.Asistio);
-
-            if (!exito)
+            return resultado switch
             {
-                return BadRequest(new { message = "No se pudo registrar la asistencia. Verifique los datos." });
-            }
-
-            return Ok(new { message = "Asistencia registrada correctamente." });
+                CU04_ResultadoRegistro.Registrado => Ok(new { message = "Asistencia registrada correctamente." }),
+                CU04_ResultadoRegistro.SolicitudInvalida => BadRequest(new { message = "La sesión o los registros enviados no son válidos." }),
+                CU04_ResultadoRegistro.SesionNoEncontrada => NotFound(new { message = "No se encontró la sesión." }),
+                CU04_ResultadoRegistro.ParticipanteNoAsignado => Conflict(new { message = "Uno o más participantes no están asignados a esta sesión." }),
+                _ => StatusCode(500)
+            };
         }
     }
 }
